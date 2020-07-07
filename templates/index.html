@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Image Answering</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+		<link rel="stylesheet" href="{{url_for('static',filename='assets/css/main.css')}}" />
+		<noscript><link rel="stylesheet" href="{{url_for('static',filename='assets/css/noscript.css')}}" /></noscript>
+	</head>
+	<body class="is-preload-0 is-preload-1 is-preload-2">
+		<script>
+			window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+			let finalTranscript = '';
+			let recognition = new window.SpeechRecognition();
+		
+			recognition.interimResults = true;
+			recognition.maxAlternatives = 10;
+			recognition.continuous = true;
+		
+			recognition.onresult = (event) => {
+			  let interimTranscript = '';
+			  for (let i = event.resultIndex, len = event.results.length; i < len; i++) {
+				let transcript = event.results[i][0].transcript;
+				if (event.results[i].isFinal) {
+				  finalTranscript += transcript;
+				} else {
+				  interimTranscript += transcript;
+				}
+			  }
+		
+			  document.getElementById("fname").value = finalTranscript;
+			}
+			
+		  </script>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>Visual Question Answering</h1>
+						<p>Learn using Images </p>
+					<!--	<ul class="icons">
+							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+							<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
+						</ul> -->
+						
+<form action = "/uploader" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+
+         <input type = "submit"/>
+      </form>
+
+
+
+					</header>
+
+				<!-- Thumbnail -->
+				
+
+				
+
+
+				
+					<section id="thumbnails">
+					
+
+
+						<article>
+							<a class="thumbnail" href={{name}} data-position="left center"><img src="{{name}}" alt="" /></a>
+							<h2>Enter Question    <button onclick="recognition.start();">Ask using voice</button> </h2>
+				<form action = "/ask" method = "POST">
+				
+				<input type="text" id="fname" name="text"><br>
+				<button onclick="recognition.stop();">Submit</button>
+				</form>
+
+				
+
+							<h2>     {{ans}} </h2>
+<h2>{{ans2}}</h2>
+							<p></p>
+
+						</article>
+						
+					
+						
+						
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{{url_for('static',filename='assets/js/jquery.min.js')}}"></script>
+			<script src="{{url_for('static',filename='assets/js/browser.min.js')}}"></script>
+			<script src="{{url_for('static',filename='assets/js/breakpoints.min.js')}}"></script>
+			<script src="{{url_for('static',filename='assets/js/main.js')}}"></script>
+
+	</body>
+</html>
